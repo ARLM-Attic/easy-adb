@@ -22,9 +22,52 @@ Partial Class Form1
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        components = New System.ComponentModel.Container()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Process1 = New System.Diagnostics.Process()
+        Me.ListBox1 = New System.Windows.Forms.ListBox()
+        Me.SuspendLayout()
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(207, 43)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 0
+        Me.Button1.Text = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Process1
+        '
+        Me.Process1.StartInfo.Domain = ""
+        Me.Process1.StartInfo.LoadUserProfile = False
+        Me.Process1.StartInfo.Password = Nothing
+        Me.Process1.StartInfo.StandardErrorEncoding = Nothing
+        Me.Process1.StartInfo.StandardOutputEncoding = Nothing
+        Me.Process1.StartInfo.UserName = ""
+        Me.Process1.SynchronizingObject = Me
+        '
+        'ListBox1
+        '
+        Me.ListBox1.FormattingEnabled = True
+        Me.ListBox1.Location = New System.Drawing.Point(12, 12)
+        Me.ListBox1.Name = "ListBox1"
+        Me.ListBox1.Size = New System.Drawing.Size(189, 238)
+        Me.ListBox1.TabIndex = 2
+        '
+        'Form1
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(294, 262)
+        Me.Controls.Add(Me.ListBox1)
+        Me.Controls.Add(Me.Button1)
+        Me.Name = "Form1"
         Me.Text = "Form1"
+        Me.ResumeLayout(False)
+
     End Sub
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents Process1 As System.Diagnostics.Process
+    Friend WithEvents ListBox1 As System.Windows.Forms.ListBox
 
 End Class
