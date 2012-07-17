@@ -29,7 +29,7 @@ Partial Class Form1
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(207, 43)
+        Me.Button1.Location = New System.Drawing.Point(610, 12)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(75, 23)
         Me.Button1.TabIndex = 0
@@ -51,14 +51,14 @@ Partial Class Form1
         Me.ListBox1.FormattingEnabled = True
         Me.ListBox1.Location = New System.Drawing.Point(12, 12)
         Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(189, 238)
+        Me.ListBox1.Size = New System.Drawing.Size(408, 238)
         Me.ListBox1.TabIndex = 2
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(294, 262)
+        Me.ClientSize = New System.Drawing.Size(735, 262)
         Me.Controls.Add(Me.ListBox1)
         Me.Controls.Add(Me.Button1)
         Me.Name = "Form1"
