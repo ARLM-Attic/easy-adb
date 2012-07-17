@@ -27,17 +27,17 @@ Partial Class Form1
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RunADBshellScriptToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RunADBScriptToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.InstallApplicationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.InstallApplicationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.DEBUGMENUToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GETSYSTEMDATAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.ListBox1 = New System.Windows.Forms.ListBox()
-        Me.APKhandeler = New System.Windows.Forms.OpenFileDialog()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.APKhandeler = New System.Windows.Forms.OpenFileDialog()
+        Me.TreeView1 = New System.Windows.Forms.TreeView()
         Me.MenuStrip1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
@@ -45,6 +45,7 @@ Partial Class Form1
         '
         'Process1
         '
+        Me.Process1.StartInfo.CreateNoWindow = True
         Me.Process1.StartInfo.Domain = ""
         Me.Process1.StartInfo.FileName = "adb/adb.exe"
         Me.Process1.StartInfo.LoadUserProfile = False
@@ -56,6 +57,7 @@ Partial Class Form1
         Me.Process1.StartInfo.StandardOutputEncoding = Nothing
         Me.Process1.StartInfo.UserName = ""
         Me.Process1.StartInfo.UseShellExecute = False
+        Me.Process1.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
         Me.Process1.SynchronizingObject = Me
         '
         'MenuStrip1
@@ -86,6 +88,12 @@ Partial Class Form1
         Me.RunADBScriptToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
         Me.RunADBScriptToolStripMenuItem.Text = "Run ADB S&cript"
         '
+        'InstallApplicationToolStripMenuItem
+        '
+        Me.InstallApplicationToolStripMenuItem.Name = "InstallApplicationToolStripMenuItem"
+        Me.InstallApplicationToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
+        Me.InstallApplicationToolStripMenuItem.Text = "&Install application"
+        '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
@@ -96,12 +104,6 @@ Partial Class Form1
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
         Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
         Me.ExitToolStripMenuItem.Text = "&Exit"
-        '
-        'InstallApplicationToolStripMenuItem
-        '
-        Me.InstallApplicationToolStripMenuItem.Name = "InstallApplicationToolStripMenuItem"
-        Me.InstallApplicationToolStripMenuItem.Size = New System.Drawing.Size(177, 22)
-        Me.InstallApplicationToolStripMenuItem.Text = "&Install application"
         '
         'DEBUGMENUToolStripMenuItem
         '
@@ -129,8 +131,8 @@ Partial Class Form1
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.TreeView1)
         Me.TabPage1.Controls.Add(Me.Button1)
-        Me.TabPage1.Controls.Add(Me.ListBox1)
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
@@ -138,6 +140,15 @@ Partial Class Form1
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Applications"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(532, 7)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
+        Me.Button1.TabIndex = 1
+        Me.Button1.Text = "Get apk"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'TabPage2
         '
@@ -149,28 +160,18 @@ Partial Class Form1
         Me.TabPage2.Text = "TabPage2"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'ListBox1
-        '
-        Me.ListBox1.Dock = System.Windows.Forms.DockStyle.Left
-        Me.ListBox1.FormattingEnabled = True
-        Me.ListBox1.Location = New System.Drawing.Point(3, 3)
-        Me.ListBox1.Name = "ListBox1"
-        Me.ListBox1.Size = New System.Drawing.Size(522, 206)
-        Me.ListBox1.TabIndex = 0
-        '
         'APKhandeler
         '
         Me.APKhandeler.Filter = "Text files (*.apk)|*.apk"
         Me.APKhandeler.FilterIndex = 0
         '
-        'Button1
+        'TreeView1
         '
-        Me.Button1.Location = New System.Drawing.Point(532, 7)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(75, 23)
-        Me.Button1.TabIndex = 1
-        Me.Button1.Text = "Uninstall"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.TreeView1.Dock = System.Windows.Forms.DockStyle.Left
+        Me.TreeView1.Location = New System.Drawing.Point(3, 3)
+        Me.TreeView1.Name = "TreeView1"
+        Me.TreeView1.Size = New System.Drawing.Size(519, 206)
+        Me.TreeView1.TabIndex = 2
         '
         'Form1
         '
@@ -202,10 +203,10 @@ Partial Class Form1
     Friend WithEvents GETSYSTEMDATAToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
-    Friend WithEvents ListBox1 As System.Windows.Forms.ListBox
     Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
     Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents APKhandeler As System.Windows.Forms.OpenFileDialog
     Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents TreeView1 As System.Windows.Forms.TreeView
 
 End Class

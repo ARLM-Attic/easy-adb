@@ -1,0 +1,5 @@
+cd /data/app
+ls
+cd /mnt/asec
+ls -1
+exit
