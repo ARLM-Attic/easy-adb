@@ -5,7 +5,7 @@ Public Class Form1
         TreeView1.Nodes.Add("DATA")
         TreeView1.Nodes.Add("SDCARD")
         TreeView1.Nodes.Add("SYSTEM")
-        adb_shell_script("script\Getdataapps.eadbss", 1, "")
+        adb_shell_script("script\Getdataapps.eadbss", 1)
     End Sub
     Private Sub InstallApplicationToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles InstallApplicationToolStripMenuItem.Click
         'APKinstaller.ShowDialog()
@@ -32,6 +32,11 @@ Public Class Form1
         End If
 
     End Sub
+    Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
+        If Dialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+            adb_command(installcomand)
+        End If
+    End Sub
     Private Sub Button3_Click(sender As System.Object, e As System.EventArgs) Handles Button3.Click
         If TreeView1.SelectedNode.Level = 1 Then
             Dim sort As Integer = TreeView1.SelectedNode.Parent.Index
@@ -55,15 +60,14 @@ Public Class Form1
             Do Until Process1.StandardOutput.EndOfStream
                 Dim output As String = Process1.StandardOutput.ReadLine
                 If Not output = Nothing Then
-                    ListBox1.Items.Add(output)
+                    waiting_for_adb.ListBox1.Items.Add(output.Replace(" ", ""))
                 End If
             Loop
             Process1.WaitForExit()
         End If
-        MsgBox(Process1.ExitCode)
     End Sub
 
-    Sub adb_shell_script(path As String, show As Integer, file As String)
+    Sub adb_shell_script(path As String, show As Integer)
         start_server()
         If Device_connected() = True Then
             Process1.StartInfo.Arguments = "shell"
@@ -71,7 +75,7 @@ Public Class Form1
             Dim scriptreader As StreamReader = New StreamReader(script)
             Process1.Start()
             Do Until scriptreader.EndOfStream
-                Process1.StandardInput.WriteLine(scriptreader.ReadLine().Replace("#file#", file) & " ")
+                Process1.StandardInput.WriteLine(scriptreader.ReadLine() & " ")
             Loop
             scriptreader.Close()
             Dim sort As Boolean
@@ -80,7 +84,7 @@ Public Class Form1
                 If Not output = Nothing Then
                     Select Case show
                         Case 0
-                            TreeView1.Nodes.Add(output)
+                            MsgBox(output)
                         Case 1
                             If Not output.Contains(" ") Then
                                 If output.Contains(".apk") Then
@@ -95,13 +99,20 @@ Public Class Form1
                                     End If
                                     sort = True
 
-                                    End If
+                                End If
 
                             End If
                     End Select
-                    
+
                 End If
             Loop
+            Select Case show
+                Case 2
+                    'If installerror.Contains( Then
+
+                    'End If
+            End Select
+
             Process1.WaitForExit()
         End If
     End Sub
@@ -109,9 +120,5 @@ Public Class Form1
         Process1.StartInfo.Arguments = "start-server"
         Process1.Start()
         Process1.WaitForExit()
-    End Sub
-
-    Private Sub Button2_Click(sender As System.Object, e As System.EventArgs) Handles Button2.Click
-
     End Sub
 End Class

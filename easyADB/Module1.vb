@@ -1,6 +1,7 @@
 ﻿Imports easyADB.Form1
 Imports System.IO
 Module Module1
+    Public installcomand As String
     Function Device_connected() As Boolean
         Form1.Process1.StartInfo.Arguments = "devices"
         Form1.Process1.Start()
