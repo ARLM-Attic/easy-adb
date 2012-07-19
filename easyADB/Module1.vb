@@ -7,6 +7,7 @@ Module Module1
         Form1.Process1.Start()
         Dim functionoutput As String = "error"
         Do Until Form1.Process1.StandardOutput.EndOfStream
+            Application.DoEvents()
             Dim output As String = Form1.Process1.StandardOutput.ReadLine
             If Not output = Nothing Then
                 functionoutput = output
