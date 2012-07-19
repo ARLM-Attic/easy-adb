@@ -1,7 +1,0 @@
-cd /data/app
-ls -1
-cd /mnt/asec
-ls -1
-cd /system/app
-ls -1
-exit

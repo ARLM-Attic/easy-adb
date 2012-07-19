@@ -1,0 +1,3 @@
+cd /mnt/asec
+ls -1
+exit

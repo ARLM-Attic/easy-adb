@@ -16,6 +16,15 @@ Public Class Form1
     Private Sub Button3_Click(sender As System.Object, e As System.EventArgs) Handles Button3.Click
         uninstallapp()
     End Sub
+    Private Sub RefreshToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles RefreshToolStripMenuItem.Click
+        getdataapps()
+    End Sub
+    Private Sub Form1_Resize(sender As Object, e As System.EventArgs) Handles Me.Resize
+        TreeView1.Size = New Size(Width - 130, Height - 129)
+        Button1.Location = New Point(Width - 120, 6)
+        Button2.Location = New Point(Width - 120, 35)
+        Button3.Location = New Point(Width - 120, 64)
+    End Sub
 
     'opdrachten
     Sub uninstallapp()
@@ -41,9 +50,11 @@ Public Class Form1
         ToolStripStatusLabel1.Text = "Loading application data..."
         TreeView1.Nodes.Clear()
         TreeView1.Nodes.Add("DATA")
+        adb_shell_script("script\GetappDATA.eadbss", 1, 0)
         TreeView1.Nodes.Add("SDCARD")
+        adb_shell_script("script\GetappSDCARD.eadbss", 1, 1)
         TreeView1.Nodes.Add("SYSTEM")
-        adb_shell_script("script\Getdataapps.eadbss", 1)
+        adb_shell_script("script\GetappSYSTEM.eadbss", 1, 2)
         ToolStripStatusLabel1.Text = "Done!"
     End Sub
     Sub pullapp()
@@ -99,7 +110,7 @@ Public Class Form1
         End If
     End Sub
 
-    Sub adb_shell_script(path As String, show As Integer)
+    Sub adb_shell_script(path As String, show As Integer, categorie As Integer)
         start_server()
         If Device_connected() = True Then
             Process1.StartInfo.Arguments = "shell"
@@ -108,10 +119,11 @@ Public Class Form1
             Process1.Start()
             Do Until scriptreader.EndOfStream
                 Application.DoEvents()
-                Process1.StandardInput.WriteLine(scriptreader.ReadLine() & " ")
+                Dim input As String = scriptreader.ReadLine()
+                Process1.StandardInput.WriteLine(input & " ")
+
             Loop
             scriptreader.Close()
-            Dim sort As Boolean
             Do Until Process1.StandardOutput.EndOfStream
                 Application.DoEvents()
                 Dim output As String = Process1.StandardOutput.ReadLine
@@ -120,21 +132,8 @@ Public Class Form1
                         Case 0
                             MsgBox(output)
                         Case 1
-                            If Not output.Contains(" ") And Not output.Contains(".tmp") Then
-                                If output.Contains(".apk") Then
-                                    If sort = False Then
-                                        TreeView1.Nodes(0).Nodes.Add(output.Replace(".apk", ""))
-                                    Else
-                                        TreeView1.Nodes(2).Nodes.Add(output.Replace(".apk", ""))
-                                    End If
-                                Else
-                                    If Not output.Contains(".odex") Then
-                                        TreeView1.Nodes(1).Nodes.Add(output)
-                                    End If
-                                    sort = True
-
-                                End If
-
+                            If Not output.Contains(" ") And Not output.Contains(".tmp") And Not output.Contains("odex") Then
+                                TreeView1.Nodes(categorie).Nodes.Add(output.Replace(".apk", ""))
                             End If
                     End Select
 
@@ -154,12 +153,5 @@ Public Class Form1
         Process1.StartInfo.Arguments = "start-server"
         Process1.Start()
         Process1.WaitForExit()
-    End Sub
-
-    Private Sub Form1_Resize(sender As Object, e As System.EventArgs) Handles Me.Resize
-        TreeView1.Size = New Size(Width - 130, Height - 104)
-        Button1.Location = New Point(Width - 120, 6)
-        Button2.Location = New Point(Width - 120, 35)
-        Button3.Location = New Point(Width - 120, 64)
     End Sub
 End Class

@@ -1,0 +1,3 @@
+cd /system/app
+ls -1
+exit

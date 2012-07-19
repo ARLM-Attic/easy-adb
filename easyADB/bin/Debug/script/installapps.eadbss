@@ -1,3 +1,0 @@
-pm setInstallLocation #installlocation#
-pm install #arguments# #file#
-exit
