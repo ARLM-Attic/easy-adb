@@ -31,10 +31,14 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
+[dirs]
+name: "adb"
+name: "script"
+
 [Files]
 Source: "C:\Users\Thomas\Documents\Visual Studio 2010\Projects\easyADB\easyADB\bin\Release\easyADB.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Thomas\Documents\Visual Studio 2010\Projects\easyADB\easyADB\bin\Release\adb\*"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\Thomas\Documents\Visual Studio 2010\Projects\easyADB\easyADB\bin\Release\script\*"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Thomas\Documents\Visual Studio 2010\Projects\easyADB\easyADB\bin\Release\adb\*"; DestDir: "{app}\adb"; Flags: ignoreversion
+Source: "C:\Users\Thomas\Documents\Visual Studio 2010\Projects\easyADB\easyADB\bin\Release\script\*"; DestDir: "{app}\script"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
