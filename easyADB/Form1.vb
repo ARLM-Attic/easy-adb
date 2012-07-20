@@ -25,6 +25,9 @@ Public Class Form1
         Button2.Location = New Point(Width - 120, 35)
         Button3.Location = New Point(Width - 120, 64)
     End Sub
+    Private Sub AboutEasyADBToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles AboutEasyADBToolStripMenuItem.Click
+        AboutBox1.ShowDialog()
+    End Sub
 
     'opdrachten
     Sub uninstallapp()
