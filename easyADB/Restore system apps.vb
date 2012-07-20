@@ -9,10 +9,12 @@ Public Class Restore_system_apps
         ListBox1.Enabled = False
         Dim max As Integer = My.Computer.FileSystem.GetFiles("backup").Count
         Dim count As Integer = 0
-        Do While count < max
-            ListBox1.Items.Add(My.Computer.FileSystem.GetFileInfo(My.Computer.FileSystem.GetFiles("backup").Item(count)).Name)
-            count += 1
-        Loop
+        If Directory.Exists("backup") Then
+            Do While count < max
+                ListBox1.Items.Add(My.Computer.FileSystem.GetFileInfo(My.Computer.FileSystem.GetFiles("backup").Item(count)).Name)
+                count += 1
+            Loop
+        End If
         If Device_connected() = True Then
             Label2.Text = "Connected = True"
             ListBox1.Enabled = True
