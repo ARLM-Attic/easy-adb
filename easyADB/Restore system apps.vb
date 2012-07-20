@@ -7,9 +7,9 @@ Public Class Restore_system_apps
         Label2.Text = "Connected = False"
         Button2.Enabled = False
         ListBox1.Enabled = False
-        Dim max As Integer = My.Computer.FileSystem.GetFiles("backup").Count
         Dim count As Integer = 0
-        If Directory.Exists("backup") Then
+        If Directory.Exists("\backup") Then
+            Dim max As Integer = My.Computer.FileSystem.GetFiles("backup").Count
             Do While count < max
                 ListBox1.Items.Add(My.Computer.FileSystem.GetFileInfo(My.Computer.FileSystem.GetFiles("backup").Item(count)).Name)
                 count += 1
