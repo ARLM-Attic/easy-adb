@@ -5,22 +5,25 @@ Public Class Dialog1
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
         'Me.Close()
-        Dim SDcard As String
-        Dim arguments As String
-        If CheckBox2.Checked = True Then
-            SDcard = "-s"
+        If CheckBox3.Checked = True Then
+            installcomand = "#INSTALLSYSTEM#" & TextBox1.Text
         Else
-            SDcard = ""
+            Dim SDcard As String
+            Dim arguments As String
+            If CheckBox2.Checked = True Then
+                SDcard = "-s"
+            Else
+                SDcard = ""
+            End If
+
+            If CheckBox1.Checked = True Then
+                arguments = "-r"
+            Else
+                arguments = ""
+            End If
+            installcomand = "install " & arguments & " " & SDcard & " """ & TextBox1.Text & """"
+            Close()
         End If
-        
-        If CheckBox1.Checked = True Then
-            arguments = "-r"
-        Else
-            arguments = ""
-        End If
-        installcomand = "install " & arguments & " " & SDcard & " """ & TextBox1.Text & """"
-        'MsgBox("install " & arguments & " " & SDcard & " """ & TextBox1.Text & """")
-        Close()
     End Sub
 
     Private Sub Cancel_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Cancel_Button.Click
@@ -34,17 +37,27 @@ Public Class Dialog1
 
     Private Sub APKhandler_FileOk(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles APKhandler.FileOk
         TextBox1.Text = APKhandler.FileName
+        CheckBox3.Enabled = True
+        CheckBox2.Enabled = True
+        CheckBox1.Enabled = True
     End Sub
 
     Private Sub Dialog1_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         TextBox1.ReadOnly = True
+        CheckBox3.Enabled = False
+        CheckBox2.Enabled = False
+        CheckBox1.Enabled = False
     End Sub
 
     Private Sub CheckBox3_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles CheckBox3.CheckedChanged
         If CheckBox3.Checked = True Then
-            If MsgBox("Warning, make sure that this is a system/app", MsgBoxStyle.YesNo Or MsgBoxStyle.Critical) = MsgBoxResult.Yes Then
-
+            If MsgBox("Warning, Is the selected file a system application?", MsgBoxStyle.YesNo Or MsgBoxStyle.Critical) = MsgBoxResult.Yes Then
+                CheckBox1.Enabled = False
+                CheckBox2.Enabled = False
             End If
+        Else
+            CheckBox1.Enabled = True
+            CheckBox2.Enabled = True
         End If
     End Sub
 End Class

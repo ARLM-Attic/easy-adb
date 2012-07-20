@@ -41,7 +41,8 @@ Partial Class Form1
         Me.TreeView1 = New System.Windows.Forms.TreeView()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.RestoreDeletedSystemAppsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.MenuStrip1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -106,7 +107,7 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutEasyADBToolStripMenuItem})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RestoreDeletedSystemAppsToolStripMenuItem, Me.ToolStripSeparator2, Me.AboutEasyADBToolStripMenuItem})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -114,7 +115,7 @@ Partial Class Form1
         'AboutEasyADBToolStripMenuItem
         '
         Me.AboutEasyADBToolStripMenuItem.Name = "AboutEasyADBToolStripMenuItem"
-        Me.AboutEasyADBToolStripMenuItem.Size = New System.Drawing.Size(159, 22)
+        Me.AboutEasyADBToolStripMenuItem.Size = New System.Drawing.Size(223, 22)
         Me.AboutEasyADBToolStripMenuItem.Text = "&About Easy ADB"
         '
         'TabPage1
@@ -184,7 +185,6 @@ Partial Class Form1
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TabControl1.Location = New System.Drawing.Point(0, 24)
         Me.TabControl1.Name = "TabControl1"
@@ -192,15 +192,16 @@ Partial Class Form1
         Me.TabControl1.Size = New System.Drawing.Size(584, 338)
         Me.TabControl1.TabIndex = 4
         '
-        'TabPage2
+        'RestoreDeletedSystemAppsToolStripMenuItem
         '
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(576, 312)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "Back-up"
-        Me.TabPage2.UseVisualStyleBackColor = True
+        Me.RestoreDeletedSystemAppsToolStripMenuItem.Name = "RestoreDeletedSystemAppsToolStripMenuItem"
+        Me.RestoreDeletedSystemAppsToolStripMenuItem.Size = New System.Drawing.Size(223, 22)
+        Me.RestoreDeletedSystemAppsToolStripMenuItem.Text = "&Restore deleted system apps"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(220, 6)
         '
         'Form1
         '
@@ -232,17 +233,18 @@ Partial Class Form1
     Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripMenuItem1 As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents APKpuller As System.Windows.Forms.FolderBrowserDialog
+    Friend WithEvents RefreshToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents HelpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents AboutEasyADBToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
     Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
+    Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
+    Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents Button3 As System.Windows.Forms.Button
     Friend WithEvents Button2 As System.Windows.Forms.Button
     Friend WithEvents TreeView1 As System.Windows.Forms.TreeView
     Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
-    Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
-    Friend WithEvents RefreshToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents HelpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents AboutEasyADBToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
+    Friend WithEvents RestoreDeletedSystemAppsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
 
 End Class
