@@ -35,15 +35,23 @@ Public Class Form1
             Dim sort As Integer = TreeView1.SelectedNode.Parent.Index
             Select Case sort
                 Case 0
-                    adb_command("uninstall " & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text.Replace("-1", "").Replace("-2", ""))
-                    MsgBox(commandoutput)
-                    getdataapps()
+                    If MsgBox("Are You sure that you wanna uninstall """ & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text & """", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation) = MsgBoxResult.Yes Then
+                        adb_command("uninstall " & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text.Replace("-1", "").Replace("-2", ""))
+                        MsgBox(commandoutput)
+                        getdataapps()
+                    End If
                 Case 1
-                    adb_command("uninstall " & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text.Replace("-1", "").Replace("-2", ""))
-                    MsgBox(commandoutput)
-                    getdataapps()
+                    If MsgBox("Are You sure that you wanna uninstall """ & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text & """", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation) = MsgBoxResult.Yes Then
+                        adb_command("uninstall " & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text.Replace("-1", "").Replace("-2", ""))
+                        MsgBox(commandoutput)
+                        getdataapps()
+                    End If
                 Case 2
-                    MsgBox("Deleting system apps are tempory not avaible")
+                    If MsgBox("Warning this is a system a application uninstalling this may cause malfunctioning of your device!!  are you sure you want to uninstall " & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text & vbNewLine & "If not, make a nandroid backup with CMW.", MsgBoxStyle.YesNo Or MsgBoxStyle.Critical) = MsgBoxResult.Yes Then
+                        adb_command("pull /system/app/" & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text & ".apk backup\system")
+                        adb_command("remount")
+                        adb_command("shell rm /system/app/" & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text & ".apk")
+                    End If
             End Select
         End If
 
@@ -70,7 +78,7 @@ Public Class Form1
                         adb_command("pull /data/app/" & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text & ".apk """ & APKpuller.SelectedPath & """")
                     Case 1
                         adb_command("pull /mnt/asec/" & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text & "/pkg.apk """ & APKpuller.SelectedPath & """")
-                        My.Computer.FileSystem.RenameFile("pkg.apk", TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text & ".apk")
+                        My.Computer.FileSystem.RenameFile(APKpuller.SelectedPath & "\pkg.apk", TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text & ".apk")
                     Case 2
                         adb_command("pull /system/app/" & TreeView1.Nodes(sort).Nodes(TreeView1.SelectedNode.Index).Text & ".apk """ & APKpuller.SelectedPath & """")
                 End Select

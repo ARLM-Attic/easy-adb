@@ -27,8 +27,11 @@ Partial Class Form1
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.InstallApplicationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.RefreshToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.AboutEasyADBToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.APKpuller = New System.Windows.Forms.FolderBrowserDialog()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
@@ -38,9 +41,7 @@ Partial Class Form1
         Me.TreeView1 = New System.Windows.Forms.TreeView()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.RefreshToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AboutEasyADBToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.MenuStrip1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -86,6 +87,12 @@ Partial Class Form1
         Me.InstallApplicationToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
         Me.InstallApplicationToolStripMenuItem.Text = "&Install application"
         '
+        'RefreshToolStripMenuItem
+        '
+        Me.RefreshToolStripMenuItem.Name = "RefreshToolStripMenuItem"
+        Me.RefreshToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
+        Me.RefreshToolStripMenuItem.Text = "&Refresh"
+        '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
@@ -96,6 +103,19 @@ Partial Class Form1
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
         Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
         Me.ExitToolStripMenuItem.Text = "&Exit"
+        '
+        'HelpToolStripMenuItem
+        '
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutEasyADBToolStripMenuItem})
+        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
+        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
+        Me.HelpToolStripMenuItem.Text = "Help"
+        '
+        'AboutEasyADBToolStripMenuItem
+        '
+        Me.AboutEasyADBToolStripMenuItem.Name = "AboutEasyADBToolStripMenuItem"
+        Me.AboutEasyADBToolStripMenuItem.Size = New System.Drawing.Size(159, 22)
+        Me.AboutEasyADBToolStripMenuItem.Text = "&About Easy ADB"
         '
         'TabPage1
         '
@@ -158,12 +178,13 @@ Partial Class Form1
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(88, 23)
         Me.Button1.TabIndex = 1
-        Me.Button1.Text = "Get apk"
+        Me.Button1.Text = "Pull apk"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TabControl1.Location = New System.Drawing.Point(0, 24)
         Me.TabControl1.Name = "TabControl1"
@@ -171,24 +192,15 @@ Partial Class Form1
         Me.TabControl1.Size = New System.Drawing.Size(584, 338)
         Me.TabControl1.TabIndex = 4
         '
-        'RefreshToolStripMenuItem
+        'TabPage2
         '
-        Me.RefreshToolStripMenuItem.Name = "RefreshToolStripMenuItem"
-        Me.RefreshToolStripMenuItem.Size = New System.Drawing.Size(167, 22)
-        Me.RefreshToolStripMenuItem.Text = "&Refresh"
-        '
-        'HelpToolStripMenuItem
-        '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutEasyADBToolStripMenuItem})
-        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
-        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
-        Me.HelpToolStripMenuItem.Text = "Help"
-        '
-        'AboutEasyADBToolStripMenuItem
-        '
-        Me.AboutEasyADBToolStripMenuItem.Name = "AboutEasyADBToolStripMenuItem"
-        Me.AboutEasyADBToolStripMenuItem.Size = New System.Drawing.Size(159, 22)
-        Me.AboutEasyADBToolStripMenuItem.Text = "&About Easy ADB"
+        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(576, 312)
+        Me.TabPage2.TabIndex = 1
+        Me.TabPage2.Text = "Back-up"
+        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -231,5 +243,6 @@ Partial Class Form1
     Friend WithEvents RefreshToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AboutEasyADBToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
 
 End Class

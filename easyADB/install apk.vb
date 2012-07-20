@@ -39,4 +39,12 @@ Public Class Dialog1
     Private Sub Dialog1_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
         TextBox1.ReadOnly = True
     End Sub
+
+    Private Sub CheckBox3_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles CheckBox3.CheckedChanged
+        If CheckBox3.Checked = True Then
+            If MsgBox("Warning, make sure that this is a system/app", MsgBoxStyle.YesNo Or MsgBoxStyle.Critical) = MsgBoxResult.Yes Then
+
+            End If
+        End If
+    End Sub
 End Class
