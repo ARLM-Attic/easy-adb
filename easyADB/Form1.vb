@@ -1,10 +1,22 @@
 ﻿Imports System.IO
+Imports System
+Imports System.Windows.Forms
+Imports System.Drawing
+Imports System.Collections
+
 Public Class Form1
     Public commandoutput As String
     Public commandoutputscript As String
     Public treeview1isclicked As Integer
-    Private Sub Form1_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+    Public currentpath As String = ""
+    Public historyback(0 To 5) As String
+    Public historyforward(0 To 5) As String
+
+    Private Sub Form1_Load(sender As System.Object, e As System.EventArgs) Handles Me.Load
         getdataapps()
+        explorerexplore("/")
+        ToolStripTextBox1.Text = "Home"
+        TreeView1.ExpandAll()
     End Sub
     Private Sub InstallApplicationToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles InstallApplicationToolStripMenuItem.Click
         installapk()
@@ -29,12 +41,88 @@ Public Class Form1
         Button1.Location = New Point(Width - 120, 6)
         Button2.Location = New Point(Width - 120, 35)
         Button3.Location = New Point(Width - 120, 64)
+        ListView1.Size = New Size(Width - 33, Height - 140)
     End Sub
     Private Sub AboutEasyADBToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles AboutEasyADBToolStripMenuItem.Click
         AboutBox1.ShowDialog()
     End Sub
+    Private Sub ListView1_DoubleClick(sender As Object, e As System.EventArgs) Handles ListView1.DoubleClick
+        Select Case ListView1.SelectedItems(0).SubItems(1).Text
+            Case "Link"
+                currentpath = ListView1.SelectedItems(0).SubItems(2).Text
+                ToolStripTextBox1.Text = currentpath
+                explorerexplore(currentpath)
+            Case "Folder"
+                currentpath = currentpath & "/" & ListView1.SelectedItems.Item(0).Text
+                explorerexplore(currentpath)
+                ToolStripTextBox1.Text = currentpath
+        End Select
+
+
+    End Sub
+    'moet aangepast worden 
+    Private Sub ToolStripButton1_Click(sender As Object, e As System.EventArgs) Handles ToolStripButton1.Click
+        If Not currentpath = Nothing Then
+            Dim count As Integer = currentpath.Split("/").Length - 1
+            currentpath = currentpath.Remove(currentpath.Length - currentpath.Split("/")(count).Length - 1)
+            explorerexplore(currentpath)
+            ToolStripTextBox1.Text = currentpath
+        End If
+    End Sub
+    Private Sub ToolStripButton2_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton2.Click
+        currentpath = ToolStripTextBox1.Text
+        explorerexplore(currentpath)
+    End Sub
+    Private Sub ToolStripTextBox1_TextChanged1(sender As Object, e As System.EventArgs) Handles ToolStripTextBox1.TextChanged
+        If currentpath = Nothing Or currentpath = "/" Then
+            ToolStripTextBox1.Text = "Home"
+        Else
+            currentpath = ToolStripTextBox1.Text
+        End If
+    End Sub
 
     'opdrachten
+    Sub explorerexplore(path As String)
+        Process1.StartInfo.Arguments = "shell"
+        Dim stopper As Integer = 0
+        Process1.Start()
+        Process1.StandardInput.WriteLine("cd """ & path & """ ")
+        Process1.StandardInput.WriteLine("ls -l | grep ^d ")
+        Process1.StandardInput.WriteLine("ls -l | grep ^l ")
+        Process1.StandardInput.WriteLine("ls -l | grep ^- ")
+        Process1.StandardInput.WriteLine("exit ")
+        Dim first As String = Process1.StandardOutput.ReadLine
+        Dim count As Integer = 0
+        ListView1.Items.Clear()
+        Do Until Process1.StandardOutput.EndOfStream
+            Dim output As String = Process1.StandardOutput.ReadLine
+            If output.Contains(" ") And output.Contains("can't cd to") Then
+                MsgBox("Error Path doesn't exits")
+                currentpath = "/"
+                ToolStripTextBox1.Text = currentpath
+                explorerexplore(currentpath)
+                GoTo errorline
+            End If
+            If Not output = Nothing And Not output.EndsWith(" ") Then
+                Dim objectname As String = output.Split(" ")(output.Split(" ").Length - 1)
+                Select Case output.Substring(0, 1)
+                    Case "d"
+                        ListView1.Items.Add(objectname, 0).SubItems.Add("Folder")
+                    Case "l"
+                        ' ListView1.Items.Add(output.Split(" ")(output.Split(" ").Length - 3), 1)
+                        ListView1.Items.Add(New ListViewItem(New String() {output.Split(" ")(output.Split(" ").Length - 3), "Link", objectname}, 1))
+
+                    Case ("-")
+                        ListView1.Items.Add(objectname, 2).SubItems.Add("File")
+                End Select
+            Else
+
+            End If
+
+        Loop
+errorline:
+        Process1.WaitForExit()
+    End Sub
     Sub uninstallapp()
         ToolStripStatusLabel1.Text = "unistalling application, please wait..."
         If treeview1isclicked = True Then
@@ -204,5 +292,9 @@ verder:
 
     Private Sub RestoreDeletedSystemAppsToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles RestoreDeletedSystemAppsToolStripMenuItem.Click
         Restore_system_apps.ShowDialog()
+    End Sub
+
+    Private Sub InstallApplicationToolStripMenuItem_Click_1(sender As System.Object, e As System.EventArgs) Handles InstallApplicationToolStripMenuItem.Click
+
     End Sub
 End Class
