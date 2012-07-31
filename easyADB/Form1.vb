@@ -16,7 +16,6 @@ Public Class Form1
         getdataapps()
         explorerexplore("/")
         ToolStripTextBox1.Text = "Home"
-        TreeView1.ExpandAll()
     End Sub
     Private Sub InstallApplicationToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles InstallApplicationToolStripMenuItem.Click
         installapk()
@@ -47,26 +46,113 @@ Public Class Form1
         AboutBox1.ShowDialog()
     End Sub
     Private Sub ListView1_DoubleClick(sender As Object, e As System.EventArgs) Handles ListView1.DoubleClick
+        Dialog2.ListView1.Items.Clear()
         Select Case ListView1.SelectedItems(0).SubItems(1).Text
             Case "Link"
-                currentpath = ListView1.SelectedItems(0).SubItems(2).Text
+                currentpath = ListView1.SelectedItems(0).SubItems(4).Text
                 ToolStripTextBox1.Text = currentpath
                 explorerexplore(currentpath)
             Case "Folder"
                 currentpath = currentpath & "/" & ListView1.SelectedItems.Item(0).Text
                 explorerexplore(currentpath)
                 ToolStripTextBox1.Text = currentpath
+            Case "Android application package"
+                Dialog2.ListView1.Items.Add(New ListViewItem("Pull to Folder", 0, Dialog2.ListView1.Groups.Item(0)))
+                If Dialog2.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    Select Case Dialog2.dialog2result
+                        Case "Open with ADB APK installer"
+                            Form2.path = """" & currentpath & "/" & ListView1.SelectedItems(0).Text & """"
+                            Form2.Show()
+                        Case "Pull to Folder"
+                            ToolStripButton3_Click(Nothing, Nothing)
+                    End Select
+                End If
+            Case Else
+                Dialog2.ListView1.Items.Add(New ListViewItem("Pull to Folder", 0, Dialog2.ListView1.Groups.Item(0)))
+                Dialog2.ListView1.Items.Add(New ListViewItem("Open with ADB Textviewer", 1, Dialog2.ListView1.Groups.Item(0)))
+                If Dialog2.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    Select Case Dialog2.dialog2result
+                        Case "Open with ADB Textviewer"
+                            Form2.path = """" & currentpath & "/" & ListView1.SelectedItems(0).Text & """"
+                            Form2.Show()
+                        Case "Pull to Folder"
+                            ToolStripButton3_Click(Nothing, Nothing)
+                    End Select
+                End If
         End Select
-
+    End Sub
+    Private Sub ToolStripButton3_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton3.Click
+        If APKpuller.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            adb_command("pull """ & currentpath & "/" & ListView1.SelectedItems(0).Text & """ """ & APKpuller.SelectedPath & """")
+        End If
 
     End Sub
-    'moet aangepast worden 
+
+    Private Sub TreeView1_Click(sender As Object, e As System.EventArgs) Handles TreeView1.Click
+        treeview1isclicked = True
+    End Sub
+
+    Private Sub RestoreDeletedSystemAppsToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles RestoreDeletedSystemAppsToolStripMenuItem.Click
+        Restore_system_apps.ShowDialog()
+    End Sub
+
+    Private Sub ToolStripButton4_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton4.Click
+        pushfilexplorer.TextBox2.Text = currentpath
+        If pushfilexplorer.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            adb_command("shell [ -f """ & pushfilexplorer.TextBox2.Text & "/" & My.Computer.FileSystem.GetFileInfo(pushfilexplorer.TextBox1.Text).Name & """ ] && echo ""File exists"" || echo ""File does not exists""")
+            If commandoutput = "File exists" Then
+                If MsgBox("Warning, The file already exist! Do you want to overwrite?", MsgBoxStyle.YesNo Or MsgBoxStyle.Critical) = MsgBoxResult.Yes Then
+                    GoTo verder
+                End If
+            Else
+verder:
+                ToolStripStatusLabel1.Text = "Pushing File, Please wait ...."
+                adb_command("push """ & pushfilexplorer.TextBox1.Text & """ """ & pushfilexplorer.TextBox2.Text & """")
+                ToolStripStatusLabel1.Text = "Chmoding File, Please wait ...."
+                adb_command("shell chmod " & pushfilexplorer.Label10.Text & " """ & pushfilexplorer.TextBox2.Text & "/" & My.Computer.FileSystem.GetFileInfo(pushfilexplorer.TextBox1.Text).Name & """")
+                ToolStripStatusLabel1.Text = "Releading, Please wait ...."
+                explorerexplore(currentpath)
+                ToolStripStatusLabel1.Text = "Done!"
+            End If
+        End If
+    End Sub
+    Private Sub ToolStripButton5_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton5.Click
+        Try
+            If ListView1.SelectedItems(0).SubItems(1).Text = "Folder" Then
+                If MsgBox("Are you sure you wan to delete this folder", MsgBoxStyle.YesNo Or MsgBoxStyle.Critical) = MsgBoxResult.Yes Then
+                    ToolStripStatusLabel1.Text = "Deleting folder, Please wait..."
+                    adb_command("remount")
+                    adb_command("shell rm -r """ & currentpath & "/" & ListView1.SelectedItems(0).Text & """")
+                    explorerexplore(currentpath)
+                    ToolStripStatusLabel1.Text = "Done!"
+                End If
+            Else
+                If MsgBox("Are you sure you wan to delete this file", MsgBoxStyle.YesNo Or MsgBoxStyle.Critical) = MsgBoxResult.Yes Then
+                    ToolStripStatusLabel1.Text = "Deleting file, Please wait..."
+                    adb_command("remount")
+                    adb_command("shell rm """ & currentpath & "/" & ListView1.SelectedItems(0).Text & """")
+                    adb_command("shell [ -f """ & currentpath & "/" & ListView1.SelectedItems(0).Text & """ ] && echo ""File exists"" || echo ""File does not exists""")
+                    If commandoutput = "File exists" Then
+                        MsgBox("Failed")
+                    End If
+                    explorerexplore(currentpath)
+                    ToolStripStatusLabel1.Text = "Done!"
+                End If
+            End If
+        Catch
+            MsgBox("No File selected!")
+        End Try
+    End Sub
     Private Sub ToolStripButton1_Click(sender As Object, e As System.EventArgs) Handles ToolStripButton1.Click
         If Not currentpath = Nothing Then
-            Dim count As Integer = currentpath.Split("/").Length - 1
-            currentpath = currentpath.Remove(currentpath.Length - currentpath.Split("/")(count).Length - 1)
-            explorerexplore(currentpath)
-            ToolStripTextBox1.Text = currentpath
+            Try
+                Dim count As Integer = currentpath.Split("/").Length - 1
+                currentpath = currentpath.Remove(currentpath.Length - currentpath.Split("/")(count).Length - 1)
+                explorerexplore(currentpath)
+                ToolStripTextBox1.Text = currentpath
+            Catch
+                MsgBox("Can not return")
+            End Try
         End If
     End Sub
     Private Sub ToolStripButton2_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton2.Click
@@ -87,9 +173,9 @@ Public Class Form1
         Dim stopper As Integer = 0
         Process1.Start()
         Process1.StandardInput.WriteLine("cd """ & path & """ ")
-        Process1.StandardInput.WriteLine("ls -l | grep ^d ")
-        Process1.StandardInput.WriteLine("ls -l | grep ^l ")
-        Process1.StandardInput.WriteLine("ls -l | grep ^- ")
+        Process1.StandardInput.WriteLine("ls -le | grep ^d ")
+        Process1.StandardInput.WriteLine("ls -le | grep ^l ")
+        Process1.StandardInput.WriteLine("ls -le | grep ^- ")
         Process1.StandardInput.WriteLine("exit ")
         Dim first As String = Process1.StandardOutput.ReadLine
         Dim count As Integer = 0
@@ -105,15 +191,85 @@ Public Class Form1
             End If
             If Not output = Nothing And Not output.EndsWith(" ") Then
                 Dim objectname As String = output.Split(" ")(output.Split(" ").Length - 1)
+                Dim objectpermissions As String = output.Substring(1, 9)
                 Select Case output.Substring(0, 1)
                     Case "d"
-                        ListView1.Items.Add(objectname, 0).SubItems.Add("Folder")
+                        Dim filedatebuilder As String =
+                        output.Substring(output.Length - objectname.Length - 21, 21).Replace("Jan", "January").Replace("Feb", "February").Replace("Mar", "March").Replace("Apr", "April").Replace("Jun", "June").Replace("Jul", "July").Replace("Aug", "August").Replace("Sep", "September").Replace("Oct", "October").Replace("Nov", "November").Replace("Dec", "December")
+                        Dim objectdate As String = filedatebuilder.Replace("  ", " ").Split(" ")(1) & " " & filedatebuilder.Replace("  ", " ").Split(" ")(0) & " " & filedatebuilder.Replace("  ", " ").Split(" ")(3) & " " & filedatebuilder.Replace("  ", " ").Split(" ")(2)
+                        ListView1.Items.Add(New ListViewItem(New String() {objectname, "Folder", objectdate, objectpermissions}, 0))
                     Case "l"
-                        ' ListView1.Items.Add(output.Split(" ")(output.Split(" ").Length - 3), 1)
-                        ListView1.Items.Add(New ListViewItem(New String() {output.Split(" ")(output.Split(" ").Length - 3), "Link", objectname}, 1))
+                        Dim filedatebuilder As String =
+                        output.Substring(output.Length - objectname.Length - output.Split(" ")(output.Split(" ").Length - 3).Length - 25, 21).Replace("Jan", "January").Replace("Feb", "February").Replace("Mar", "March").Replace("Apr", "April").Replace("Jun", "June").Replace("Jul", "July").Replace("Aug", "August").Replace("Sep", "September").Replace("Oct", "October").Replace("Nov", "November").Replace("Dec", "December")
+                        Dim objectdate As String = filedatebuilder.Replace("  ", " ").Split(" ")(1) & " " & filedatebuilder.Replace("  ", " ").Split(" ")(0) & " " & filedatebuilder.Replace("  ", " ").Split(" ")(3) & " " & filedatebuilder.Replace("  ", " ").Split(" ")(2)
+                        ListView1.Items.Add(New ListViewItem(New String() {output.Split(" ")(output.Split(" ").Length - 3), "Link", objectdate, objectpermissions, objectname}, 1))
 
-                    Case ("-")
-                        ListView1.Items.Add(objectname, 2).SubItems.Add("File")
+                    Case "-"
+                        Dim filepic As Integer = 0
+                        Dim filetype As String = ""
+                        Dim filedatebuilder As String =
+                        output.Substring(output.Length - objectname.Length - 21, 21).Replace("Jan", "January").Replace("Feb", "February").Replace("Mar", "March").Replace("Apr", "April").Replace("Jun", "June").Replace("Jul", "July").Replace("Aug", "August").Replace("Sep", "September").Replace("Oct", "October").Replace("Nov", "November").Replace("Dec", "December")
+                        Dim filedate As String = filedatebuilder.Replace("  ", " ").Split(" ")(1) & " " & filedatebuilder.Replace("  ", " ").Split(" ")(0) & " " & filedatebuilder.Replace("  ", " ").Split(" ")(3) & " " & filedatebuilder.Replace("  ", " ").Split(" ")(2)
+                        Select Case objectname.Split(".")(objectname.Split(".").Length - 1)
+                            Case "apk"
+                                filepic = 3
+                                filetype = "Android application package"
+                            Case "PNG", "png"
+                                filepic = 4
+                                filetype = "PNG Image"
+                            Case "jpg", "JPG"
+                                filepic = 4
+                                filetype = "JPG Image"
+                            Case "prop"
+                                filepic = 5
+                                filetype = "System Info File"
+                            Case "zip", "rar", "ZIP", "RAR", "2zip", "2ZIP", "7z"
+                                filepic = 6
+                                filetype = "Archive"
+                            Case "odex"
+                                filepic = 5
+                                filetype = "Application Cache File"
+                            Case "wav"
+                                filepic = 7
+                                filetype = "Music File"
+                            Case "wav"
+                                filepic = 10
+                                filetype = "Music File"
+                            Case "ogg"
+                                filepic = 11
+                                filetype = "Ringtone"
+                            Case "ttf"
+                                filepic = 8
+                                filetype = "Font"
+                            Case "GIF", "gif"
+                                filepic = 9
+                                filetype = "GIF Image"
+                            Case "JAR", "jar"
+                                filepic = 12
+                                filetype = "java file"
+                            Case "LOG", "log"
+                                filepic = 13
+                                filetype = "Log File"
+                            Case "list", "LIST"
+                                filepic = 13
+                                filetype = "List File"
+                            Case "TXT", "txt"
+                                filepic = 13
+                                filetype = "Text File"
+                            Case "XML", "xml"
+                                filepic = 14
+                                filetype = "XML File"
+                            Case "swf", "SWF", "avi", "AVI", "3gp", "3GP", "mp4", "MP4"
+                                filepic = 15
+                                filetype = "Movie File"
+                            Case Else
+                                filepic = 2
+                                filetype = "File"
+                        End Select
+                        Dim item = ListView1.Items.Add(objectname, filepic)
+                        item.SubItems.Add(filetype)
+                        item.SubItems.Add(filedate)
+                        item.SubItems.Add(objectpermissions)
                 End Select
             Else
 
@@ -164,6 +320,8 @@ errorline:
         TreeView1.Nodes.Add("SYSTEM")
         adb_shell_script("script\GetappSYSTEM.eadbss", 1, 2, "")
         ToolStripStatusLabel1.Text = "Done!"
+        TreeView1.ExpandAll()
+        TreeView1.TopNode = TreeView1.Nodes(0)
     End Sub
     Sub pullapp()
         If treeview1isclicked = True Then
@@ -286,15 +444,8 @@ verder:
         Process1.WaitForExit()
     End Sub
 
-    Private Sub TreeView1_Click(sender As Object, e As System.EventArgs) Handles TreeView1.Click
-        treeview1isclicked = True
-    End Sub
-
-    Private Sub RestoreDeletedSystemAppsToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles RestoreDeletedSystemAppsToolStripMenuItem.Click
-        Restore_system_apps.ShowDialog()
-    End Sub
-
-    Private Sub InstallApplicationToolStripMenuItem_Click_1(sender As System.Object, e As System.EventArgs) Handles InstallApplicationToolStripMenuItem.Click
-
+    Private Sub ToolStripButton6_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton6.Click
+        adb_command("shell mkdir " & currentpath & "/" & InputBox("Give name to new folder"))
+        explorerexplore(currentpath)
     End Sub
 End Class

@@ -47,13 +47,20 @@ Partial Class Form1
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
+        Me.ToolStripButton4 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripButton3 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripButton5 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripButton6 = New System.Windows.Forms.ToolStripButton()
         Me.ListView1 = New System.Windows.Forms.ListView()
-        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
-        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
+        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.MenuStrip1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -203,6 +210,7 @@ Partial Class Form1
         '
         'TabPage2
         '
+        Me.TabPage2.BackColor = System.Drawing.Color.Transparent
         Me.TabPage2.Controls.Add(Me.ToolStrip1)
         Me.TabPage2.Controls.Add(Me.ListView1)
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
@@ -211,11 +219,10 @@ Partial Class Form1
         Me.TabPage2.Size = New System.Drawing.Size(576, 312)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Device Explorer"
-        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton1, Me.ToolStripTextBox1, Me.ToolStripButton2})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton1, Me.ToolStripTextBox1, Me.ToolStripButton2, Me.ToolStripSeparator3, Me.ToolStripButton4, Me.ToolStripButton3, Me.ToolStripButton5, Me.ToolStripButton6})
         Me.ToolStrip1.Location = New System.Drawing.Point(3, 3)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(570, 25)
@@ -230,6 +237,7 @@ Partial Class Form1
         Me.ToolStripButton1.Name = "ToolStripButton1"
         Me.ToolStripButton1.Size = New System.Drawing.Size(23, 22)
         Me.ToolStripButton1.Text = "ToolStripButton1"
+        Me.ToolStripButton1.ToolTipText = "Go to Folder above"
         '
         'ToolStripTextBox1
         '
@@ -245,19 +253,81 @@ Partial Class Form1
         Me.ToolStripButton2.Name = "ToolStripButton2"
         Me.ToolStripButton2.Size = New System.Drawing.Size(23, 22)
         Me.ToolStripButton2.Text = "ToolStripButton2"
+        Me.ToolStripButton2.ToolTipText = "Go"
+        '
+        'ToolStripSeparator3
+        '
+        Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(6, 25)
+        '
+        'ToolStripButton4
+        '
+        Me.ToolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton4.Image = CType(resources.GetObject("ToolStripButton4.Image"), System.Drawing.Image)
+        Me.ToolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton4.Name = "ToolStripButton4"
+        Me.ToolStripButton4.Size = New System.Drawing.Size(23, 22)
+        Me.ToolStripButton4.Text = "Push File to current directory"
+        '
+        'ToolStripButton3
+        '
+        Me.ToolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton3.Image = CType(resources.GetObject("ToolStripButton3.Image"), System.Drawing.Image)
+        Me.ToolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton3.Name = "ToolStripButton3"
+        Me.ToolStripButton3.Size = New System.Drawing.Size(23, 22)
+        Me.ToolStripButton3.Text = "Pull File"
+        '
+        'ToolStripButton5
+        '
+        Me.ToolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton5.Image = CType(resources.GetObject("ToolStripButton5.Image"), System.Drawing.Image)
+        Me.ToolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton5.Name = "ToolStripButton5"
+        Me.ToolStripButton5.Size = New System.Drawing.Size(23, 22)
+        Me.ToolStripButton5.Text = "Delete"
+        '
+        'ToolStripButton6
+        '
+        Me.ToolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton6.Image = Global.easyADB.My.Resources.Resources.gnome_folder_new
+        Me.ToolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton6.Name = "ToolStripButton6"
+        Me.ToolStripButton6.Size = New System.Drawing.Size(23, 22)
+        Me.ToolStripButton6.Text = "ToolStripButton6"
+        Me.ToolStripButton6.ToolTipText = "New Folder"
         '
         'ListView1
         '
-        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3})
-        Me.ListView1.LargeImageList = Me.ImageList1
-        Me.ListView1.Location = New System.Drawing.Point(6, 31)
+        Me.ListView1.AllowDrop = True
+        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader5, Me.ColumnHeader4})
+        Me.ListView1.Location = New System.Drawing.Point(8, 31)
         Me.ListView1.Name = "ListView1"
         Me.ListView1.Size = New System.Drawing.Size(562, 250)
         Me.ListView1.SmallImageList = Me.ImageList1
-        Me.ListView1.StateImageList = Me.ImageList1
         Me.ListView1.TabIndex = 0
         Me.ListView1.UseCompatibleStateImageBehavior = False
         Me.ListView1.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = "Name"
+        Me.ColumnHeader1.Width = 180
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Text = "Type"
+        Me.ColumnHeader2.Width = 80
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Date"
+        Me.ColumnHeader3.Width = 160
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Location"
+        Me.ColumnHeader4.Width = 127
         '
         'ImageList1
         '
@@ -266,6 +336,19 @@ Partial Class Form1
         Me.ImageList1.Images.SetKeyName(0, "Folder.png")
         Me.ImageList1.Images.SetKeyName(1, "shortcut folder.png")
         Me.ImageList1.Images.SetKeyName(2, "File.png")
+        Me.ImageList1.Images.SetKeyName(3, "google_android_market.png")
+        Me.ImageList1.Images.SetKeyName(4, "jpeg.png")
+        Me.ImageList1.Images.SetKeyName(5, "systemconfiguration.png")
+        Me.ImageList1.Images.SetKeyName(6, "archive.png")
+        Me.ImageList1.Images.SetKeyName(7, "audio.png")
+        Me.ImageList1.Images.SetKeyName(8, "fonts.png")
+        Me.ImageList1.Images.SetKeyName(9, "gif.png")
+        Me.ImageList1.Images.SetKeyName(10, "wav.png")
+        Me.ImageList1.Images.SetKeyName(11, "midi.png")
+        Me.ImageList1.Images.SetKeyName(12, "java.png")
+        Me.ImageList1.Images.SetKeyName(13, "Text.png")
+        Me.ImageList1.Images.SetKeyName(14, "html.png")
+        Me.ImageList1.Images.SetKeyName(15, "video.png")
         '
         'StatusStrip1
         '
@@ -282,20 +365,10 @@ Partial Class Form1
         Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(121, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
-        'ColumnHeader1
+        'ColumnHeader5
         '
-        Me.ColumnHeader1.Text = "Name"
-        Me.ColumnHeader1.Width = 150
-        '
-        'ColumnHeader2
-        '
-        Me.ColumnHeader2.Text = "Type"
-        Me.ColumnHeader2.Width = 80
-        '
-        'ColumnHeader3
-        '
-        Me.ColumnHeader3.Text = "Location"
-        Me.ColumnHeader3.Width = 100
+        Me.ColumnHeader5.Text = "Permissions"
+        Me.ColumnHeader5.Width = 106
         '
         'Form1
         '
@@ -309,6 +382,7 @@ Partial Class Form1
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "Form1"
         Me.Text = "Easy ADB"
+        Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         Me.TabPage1.ResumeLayout(False)
@@ -354,5 +428,12 @@ Partial Class Form1
     Friend WithEvents ColumnHeader1 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader2 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader3 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ToolStripButton3 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripButton4 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripSeparator3 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents ToolStripButton5 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripButton6 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
 
 End Class

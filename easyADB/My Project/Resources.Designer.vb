@@ -60,6 +60,13 @@ Namespace My.Resources
             End Set
         End Property
         
+        Friend ReadOnly Property gnome_folder_new() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("gnome_folder_new", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
         Friend ReadOnly Property opened() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("opened", resourceCulture)
@@ -70,6 +77,13 @@ Namespace My.Resources
         Friend ReadOnly Property Right() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Right", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        Friend ReadOnly Property Up() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Up", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
