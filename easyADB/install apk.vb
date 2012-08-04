@@ -35,7 +35,7 @@ Public Class Dialog1
         APKhandler.ShowDialog()
     End Sub
 
-    Private Sub APKhandler_FileOk(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles APKhandler.FileOk
+    Public Sub APKhandler_FileOk(sender As System.Object, e As System.ComponentModel.CancelEventArgs) Handles APKhandler.FileOk
         TextBox1.Text = APKhandler.FileName
         CheckBox3.Enabled = True
         CheckBox2.Enabled = True
@@ -43,10 +43,14 @@ Public Class Dialog1
     End Sub
 
     Private Sub Dialog1_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
-        TextBox1.ReadOnly = True
-        CheckBox3.Enabled = False
-        CheckBox2.Enabled = False
-        CheckBox1.Enabled = False
+        If APKhandler.FileName = Nothing Then
+            TextBox1.ReadOnly = True
+            CheckBox3.Enabled = False
+            CheckBox2.Enabled = False
+            CheckBox1.Enabled = False
+        Else
+            APKhandler_FileOk(Nothing, Nothing)
+        End If
     End Sub
 
     Private Sub CheckBox3_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles CheckBox3.CheckedChanged

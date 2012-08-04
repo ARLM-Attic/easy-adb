@@ -2,23 +2,28 @@
 Imports System.IO
 Module Module1
     Public installcomand As String
-    Function Device_connected() As Boolean
+    Public device As String
+    Function Device_connected(fuction As Integer) As Boolean
+        Device_connected = False
         Form1.Process1.StartInfo.Arguments = "devices"
         Form1.Process1.Start()
-        Dim functionoutput As String = "error"
         Do Until Form1.Process1.StandardOutput.EndOfStream
             Application.DoEvents()
             Dim output As String = Form1.Process1.StandardOutput.ReadLine
             If Not output = Nothing Then
-                functionoutput = output
+                If Not output.Contains("List") Then
+                    Dialog3.ListBox1.Items.Add(output)
+                End If
             End If
         Loop
-        If functionoutput.Contains("List") Then
-            functionoutput = False
+        If Dialog3.ListBox1.Items.Count > 1 And fuction = 1 Then
+            Dialog3.ShowDialog()
+        End If
+        If Dialog3.ListBox1.Items.Count = 0 Then
+            Device_connected = False
         Else
-            functionoutput = True
+            Device_connected = True
         End If
         Form1.Process1.WaitForExit()
-        Device_connected = functionoutput
     End Function
 End Module

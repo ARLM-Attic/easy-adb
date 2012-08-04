@@ -52,15 +52,20 @@ Partial Class Form1
         Me.ToolStripButton3 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton5 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton6 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripTextBox2 = New System.Windows.Forms.ToolStripTextBox()
+        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
         Me.ListView1 = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ImageList1 = New System.Windows.Forms.ImageList(Me.components)
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Process2 = New System.Diagnostics.Process()
+        Me.ToolStripButton7 = New System.Windows.Forms.ToolStripButton()
         Me.MenuStrip1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -91,7 +96,7 @@ Partial Class Form1
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(584, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(759, 24)
         Me.MenuStrip1.TabIndex = 3
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -158,7 +163,7 @@ Partial Class Form1
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(576, 312)
+        Me.TabPage1.Size = New System.Drawing.Size(751, 312)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Applications"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -205,7 +210,7 @@ Partial Class Form1
         Me.TabControl1.Location = New System.Drawing.Point(0, 24)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(584, 338)
+        Me.TabControl1.Size = New System.Drawing.Size(759, 338)
         Me.TabControl1.TabIndex = 4
         '
         'TabPage2
@@ -216,16 +221,16 @@ Partial Class Form1
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(576, 312)
+        Me.TabPage2.Size = New System.Drawing.Size(751, 312)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "Device Explorer"
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton1, Me.ToolStripTextBox1, Me.ToolStripButton2, Me.ToolStripSeparator3, Me.ToolStripButton4, Me.ToolStripButton3, Me.ToolStripButton5, Me.ToolStripButton6})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton1, Me.ToolStripTextBox1, Me.ToolStripButton2, Me.ToolStripSeparator3, Me.ToolStripButton4, Me.ToolStripButton3, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripTextBox2, Me.ToolStripLabel1, Me.ToolStripButton7})
         Me.ToolStrip1.Location = New System.Drawing.Point(3, 3)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(570, 25)
+        Me.ToolStrip1.Size = New System.Drawing.Size(745, 25)
         Me.ToolStrip1.TabIndex = 1
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -297,6 +302,20 @@ Partial Class Form1
         Me.ToolStripButton6.Text = "ToolStripButton6"
         Me.ToolStripButton6.ToolTipText = "New Folder"
         '
+        'ToolStripTextBox2
+        '
+        Me.ToolStripTextBox2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.ToolStripTextBox2.Name = "ToolStripTextBox2"
+        Me.ToolStripTextBox2.Size = New System.Drawing.Size(100, 25)
+        '
+        'ToolStripLabel1
+        '
+        Me.ToolStripLabel1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+        Me.ToolStripLabel1.Name = "ToolStripLabel1"
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(52, 22)
+        Me.ToolStripLabel1.Text = "Shearch:"
+        '
         'ListView1
         '
         Me.ListView1.AllowDrop = True
@@ -323,6 +342,11 @@ Partial Class Form1
         '
         Me.ColumnHeader3.Text = "Date"
         Me.ColumnHeader3.Width = 160
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Permissions"
+        Me.ColumnHeader5.Width = 106
         '
         'ColumnHeader4
         '
@@ -355,7 +379,7 @@ Partial Class Form1
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 340)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(584, 22)
+        Me.StatusStrip1.Size = New System.Drawing.Size(759, 22)
         Me.StatusStrip1.TabIndex = 7
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -365,16 +389,40 @@ Partial Class Form1
         Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(121, 17)
         Me.ToolStripStatusLabel1.Text = "ToolStripStatusLabel1"
         '
-        'ColumnHeader5
+        'Timer1
         '
-        Me.ColumnHeader5.Text = "Permissions"
-        Me.ColumnHeader5.Width = 106
+        '
+        'Process2
+        '
+        Me.Process2.StartInfo.CreateNoWindow = True
+        Me.Process2.StartInfo.Domain = ""
+        Me.Process2.StartInfo.FileName = "adb/adb.exe"
+        Me.Process2.StartInfo.LoadUserProfile = False
+        Me.Process2.StartInfo.Password = Nothing
+        Me.Process2.StartInfo.RedirectStandardError = True
+        Me.Process2.StartInfo.RedirectStandardInput = True
+        Me.Process2.StartInfo.RedirectStandardOutput = True
+        Me.Process2.StartInfo.StandardErrorEncoding = Nothing
+        Me.Process2.StartInfo.StandardOutputEncoding = Nothing
+        Me.Process2.StartInfo.UserName = ""
+        Me.Process2.StartInfo.UseShellExecute = False
+        Me.Process2.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
+        Me.Process2.SynchronizingObject = Me
+        '
+        'ToolStripButton7
+        '
+        Me.ToolStripButton7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton7.Image = CType(resources.GetObject("ToolStripButton7.Image"), System.Drawing.Image)
+        Me.ToolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton7.Name = "ToolStripButton7"
+        Me.ToolStripButton7.Size = New System.Drawing.Size(23, 22)
+        Me.ToolStripButton7.Text = "Change Permissons"
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(584, 362)
+        Me.ClientSize = New System.Drawing.Size(759, 362)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.MenuStrip1)
@@ -435,5 +483,10 @@ Partial Class Form1
     Friend WithEvents ToolStripButton6 As System.Windows.Forms.ToolStripButton
     Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
+    Friend WithEvents ToolStripTextBox2 As System.Windows.Forms.ToolStripTextBox
+    Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
+    Friend WithEvents Timer1 As System.Windows.Forms.Timer
+    Friend WithEvents Process2 As System.Diagnostics.Process
+    Friend WithEvents ToolStripButton7 As System.Windows.Forms.ToolStripButton
 
 End Class

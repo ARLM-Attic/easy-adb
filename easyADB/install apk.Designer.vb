@@ -71,7 +71,7 @@ Partial Class Dialog1
         '
         'APKhandler
         '
-        Me.APKhandler.Filter = "android application package (*.apk)|*.apk"
+        Me.APKhandler.Filter = "Android Application Package (*.apk)|*.apk"
         '
         'TextBox1
         '

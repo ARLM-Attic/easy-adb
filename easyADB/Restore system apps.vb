@@ -15,7 +15,7 @@ Public Class Restore_system_apps
                 count += 1
             Loop
         End If
-        If Device_connected() = True Then
+        If Device_connected(0) = True Then
             Label2.Text = "Connected = True"
             ListBox1.Enabled = True
         Else
@@ -28,7 +28,7 @@ Public Class Restore_system_apps
     End Sub
 
     Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
-        If Device_connected() = True Then
+        If Device_connected(0) = True Then
             Label2.Text = "Connected = True"
             ListBox1.Enabled = True
         Else

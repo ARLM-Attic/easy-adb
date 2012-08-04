@@ -12,10 +12,33 @@ Public Class Form1
     Public historyback(0 To 5) As String
     Public historyforward(0 To 5) As String
 
+    Private Sub Form1_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        Process2.Kill()
+    End Sub
+
     Private Sub Form1_Load(sender As System.Object, e As System.EventArgs) Handles Me.Load
-        getdataapps()
-        explorerexplore("/")
-        ToolStripTextBox1.Text = "Home"
+reload:
+        If Device_connected(1) = True Then
+            adb_command("remount")
+            getdataapps()
+            explorerexplore("/", False)
+            ToolStripTextBox1.Text = "Home"
+            If Not Command() = Nothing Then
+                Dialog1.APKhandler.FileName = Command()
+                Dialog1.ShowDialog()
+            End If
+            'device stay's connected checker
+            Process2.StartInfo.Arguments = device & " shell"
+            Process2.Start()
+            Timer1.Enabled = True
+        Else
+            If Not device = Nothing Then
+                GoTo reload
+            Else
+                MsgBox("No device connected" & vbNewLine & "Enable USB-debugging on device" & vbNewLine & "Press Refresh to try again")
+            End If
+        End If
+
     End Sub
     Private Sub InstallApplicationToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles InstallApplicationToolStripMenuItem.Click
         installapk()
@@ -30,7 +53,7 @@ Public Class Form1
         uninstallapp()
     End Sub
     Private Sub RefreshToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles RefreshToolStripMenuItem.Click
-        getdataapps()
+        Form1_Load(Nothing, Nothing)
     End Sub
     Private Sub ExitToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles ExitToolStripMenuItem.Click
         Close()
@@ -45,17 +68,47 @@ Public Class Form1
     Private Sub AboutEasyADBToolStripMenuItem_Click(sender As System.Object, e As System.EventArgs) Handles AboutEasyADBToolStripMenuItem.Click
         AboutBox1.ShowDialog()
     End Sub
+    Private Sub ToolStripButton7_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton7.Click
+        Try
+            If ListView1.SelectedItems(0).ToString.Length > 0 Then
+                If Permission.ShowDialog = Windows.Forms.DialogResult.OK Then
+                    ToolStripStatusLabel1.Text = "Chmoding File, Please wait ...."
+                    adb_command("shell chmod " & Permission.Label10.Text & " """ & currentpath & "/" & ListView1.SelectedItems(0).Text & """")
+                    ToolStripStatusLabel1.Text = "Releading, Please wait ...."
+                    explorerexplore(currentpath, False)
+                    ToolStripStatusLabel1.Text = "Done!"
+                End If
+            End If
+        Catch
+            MsgBox("You need to select a file or folder!")
+        End Try
+
+
+        
+    End Sub
+    Private Sub Timer1_Tick(sender As System.Object, e As System.EventArgs) Handles Timer1.Tick
+        If Process2.HasExited Then
+            Timer1.Enabled = False
+            MsgBox("Device Disconected" & vbNewLine & "Press ""refresh"" if device is connected again")
+            ListView1.Items.Clear()
+            TreeView1.Nodes.Clear()
+        End If
+    End Sub
     Private Sub ListView1_DoubleClick(sender As Object, e As System.EventArgs) Handles ListView1.DoubleClick
         Dialog2.ListView1.Items.Clear()
         Select Case ListView1.SelectedItems(0).SubItems(1).Text
             Case "Link"
                 currentpath = ListView1.SelectedItems(0).SubItems(4).Text
                 ToolStripTextBox1.Text = currentpath
-                explorerexplore(currentpath)
+                explorerexplore(currentpath, False)
             Case "Folder"
                 currentpath = currentpath & "/" & ListView1.SelectedItems.Item(0).Text
-                explorerexplore(currentpath)
-                ToolStripTextBox1.Text = currentpath
+                explorerexplore(currentpath, False)
+                If currentpath = Nothing Or currentpath = "/" Then
+                    ToolStripTextBox1.Text = "Home"
+                Else
+                    ToolStripTextBox1.Text = currentpath
+                End If
             Case "Android application package"
                 Dialog2.ListView1.Items.Add(New ListViewItem("Pull to Folder", 0, Dialog2.ListView1.Groups.Item(0)))
                 If Dialog2.ShowDialog = Windows.Forms.DialogResult.OK Then
@@ -111,7 +164,7 @@ verder:
                 ToolStripStatusLabel1.Text = "Chmoding File, Please wait ...."
                 adb_command("shell chmod " & pushfilexplorer.Label10.Text & " """ & pushfilexplorer.TextBox2.Text & "/" & My.Computer.FileSystem.GetFileInfo(pushfilexplorer.TextBox1.Text).Name & """")
                 ToolStripStatusLabel1.Text = "Releading, Please wait ...."
-                explorerexplore(currentpath)
+                explorerexplore(currentpath, False)
                 ToolStripStatusLabel1.Text = "Done!"
             End If
         End If
@@ -123,7 +176,7 @@ verder:
                     ToolStripStatusLabel1.Text = "Deleting folder, Please wait..."
                     adb_command("remount")
                     adb_command("shell rm -r """ & currentpath & "/" & ListView1.SelectedItems(0).Text & """")
-                    explorerexplore(currentpath)
+                    explorerexplore(currentpath, False)
                     ToolStripStatusLabel1.Text = "Done!"
                 End If
             Else
@@ -135,7 +188,7 @@ verder:
                     If commandoutput = "File exists" Then
                         MsgBox("Failed")
                     End If
-                    explorerexplore(currentpath)
+                    explorerexplore(currentpath, False)
                     ToolStripStatusLabel1.Text = "Done!"
                 End If
             End If
@@ -148,7 +201,7 @@ verder:
             Try
                 Dim count As Integer = currentpath.Split("/").Length - 1
                 currentpath = currentpath.Remove(currentpath.Length - currentpath.Split("/")(count).Length - 1)
-                explorerexplore(currentpath)
+                explorerexplore(currentpath, False)
                 ToolStripTextBox1.Text = currentpath
             Catch
                 MsgBox("Can not return")
@@ -157,27 +210,40 @@ verder:
     End Sub
     Private Sub ToolStripButton2_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton2.Click
         currentpath = ToolStripTextBox1.Text
-        explorerexplore(currentpath)
+        explorerexplore(currentpath, False)
+    End Sub
+
+    Private Sub ToolStripTextBox1_Click(sender As Object, e As System.EventArgs) Handles ToolStripTextBox1.Click
+
+        'AcceptButton = ToolStripButton2
     End Sub
     Private Sub ToolStripTextBox1_TextChanged1(sender As Object, e As System.EventArgs) Handles ToolStripTextBox1.TextChanged
-        If currentpath = Nothing Or currentpath = "/" Then
-            ToolStripTextBox1.Text = "Home"
-        Else
-            currentpath = ToolStripTextBox1.Text
-        End If
+      
+    End Sub
+
+    Private Sub ToolStripTextBox2_TextChanged(sender As Object, e As System.EventArgs) Handles ToolStripTextBox2.TextChanged
+        explorerexplore(ToolStripTextBox2.Text, True)
     End Sub
 
     'opdrachten
-    Sub explorerexplore(path As String)
-        Process1.StartInfo.Arguments = "shell"
+    Sub explorerexplore(path As String, search As Boolean)
+        If path = "Home" Then
+            path = "/"
+        End If
+        Process1.StartInfo.Arguments = device & " shell"
         Dim stopper As Integer = 0
         Process1.Start()
-        Process1.StandardInput.WriteLine("cd """ & path & """ ")
-        Process1.StandardInput.WriteLine("ls -le | grep ^d ")
-        Process1.StandardInput.WriteLine("ls -le | grep ^l ")
-        Process1.StandardInput.WriteLine("ls -le | grep ^- ")
+        If search = True Then
+            Process1.StandardInput.WriteLine("cd """ & currentpath & """ ")
+            Process1.StandardInput.WriteLine("find -name """ & path & """ -exec ls -l {} \;")
+        Else
+            Process1.StandardInput.WriteLine("cd """ & path & """ ")
+            Process1.StandardInput.WriteLine("ls -le | grep ^d ")
+            Process1.StandardInput.WriteLine("ls -le | grep ^l ")
+            Process1.StandardInput.WriteLine("ls -le | grep ^- ")
+        End If
+
         Process1.StandardInput.WriteLine("exit ")
-        Dim first As String = Process1.StandardOutput.ReadLine
         Dim count As Integer = 0
         ListView1.Items.Clear()
         Do Until Process1.StandardOutput.EndOfStream
@@ -186,7 +252,7 @@ verder:
                 MsgBox("Error Path doesn't exits")
                 currentpath = "/"
                 ToolStripTextBox1.Text = currentpath
-                explorerexplore(currentpath)
+                explorerexplore(currentpath, False)
                 GoTo errorline
             End If
             If Not output = Nothing And Not output.EndsWith(" ") Then
@@ -382,61 +448,52 @@ verder:
     'functions
     Sub adb_command(command As String)
         start_server()
-        If Device_connected() = True Then
-            Process1.StartInfo.Arguments = command
-            Process1.Start()
-            Do Until Process1.StandardOutput.EndOfStream
-                Application.DoEvents()
-                Dim output As String = Process1.StandardOutput.ReadLine
-                If Not output = Nothing Then
-                    commandoutput = output
-                End If
-            Loop
-            Process1.WaitForExit()
-        End If
+        Process1.StartInfo.Arguments = device & " " & command
+        Process1.Start()
+        Do Until Process1.StandardOutput.EndOfStream
+            Application.DoEvents()
+            Dim output As String = Process1.StandardOutput.ReadLine
+            If Not output = Nothing Then
+                commandoutput = output
+            End If
+        Loop
+        Process1.WaitForExit()
     End Sub
 
     Sub adb_shell_script(path As String, show As Integer, categorie As Integer, filename As String)
         start_server()
-        If Device_connected() = True Then
-            Process1.StartInfo.Arguments = "shell"
-            Dim script As FileStream = New FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read)
-            Dim scriptreader As StreamReader = New StreamReader(script)
-            Process1.Start()
-            Do Until scriptreader.EndOfStream
-                Application.DoEvents()
-                Dim input As String = scriptreader.ReadLine()
-                Process1.StandardInput.WriteLine(input.Replace("#FILENAME#", filename) & " ")
+        Process1.StartInfo.Arguments = device & " shell"
+        Dim script As FileStream = New FileStream(My.Computer.FileSystem.GetFileInfo(Application.ExecutablePath).Directory.FullName & "\" & path, FileMode.Open, FileAccess.Read, FileShare.Read)
+        Dim scriptreader As StreamReader = New StreamReader(script)
+        Process1.Start()
+        Do Until scriptreader.EndOfStream
+            Application.DoEvents()
+            Dim input As String = scriptreader.ReadLine()
+            Process1.StandardInput.WriteLine(input.Replace("#FILENAME#", filename) & " ")
 
-            Loop
-            scriptreader.Close()
-            Do Until Process1.StandardOutput.EndOfStream
-                Application.DoEvents()
-                Dim output As String = Process1.StandardOutput.ReadLine
-                If Not output = Nothing Then
-                    Select Case show
-                        Case 0
-                            If Not output.Contains(" ") And Not output.Contains(".tmp") And Not output.Contains("odex") Then
-                                commandoutput = output
-                                MsgBox(output)
-                            End If
-                        Case 1
-                            If Not output.Contains(" ") And Not output.Contains(".tmp") And Not output.Contains("odex") Then
-                                TreeView1.Nodes(categorie).Nodes.Add(output.Replace(".apk", ""))
-                            End If
-                    End Select
+        Loop
+        scriptreader.Close()
+        Do Until Process1.StandardOutput.EndOfStream
+            Application.DoEvents()
+            Dim output As String = Process1.StandardOutput.ReadLine
+            If Not output = Nothing Then
+                Select Case show
+                    Case 0
+                        If Not output.Contains(" ") And Not output.Contains(".tmp") And Not output.Contains("odex") Then
+                            commandoutput = output
+                            MsgBox(output)
+                        End If
+                    Case 1
+                        If Not output.Contains(" ") And Not output.Contains(".tmp") And Not output.Contains("odex") Then
+                            TreeView1.Nodes(categorie).Nodes.Add(output.Replace(".apk", ""))
+                        End If
+                End Select
 
-                End If
-            Loop
-            Select Case show
-                Case 2
-                    'If installerror.Contains( Then
-
-                    'End If
-            End Select
-
-            Process1.WaitForExit()
-        End If
+            End If
+        Loop
+        script.Close()
+        scriptreader.Close()
+        Process1.WaitForExit()
     End Sub
     Sub start_server()
         Process1.StartInfo.Arguments = "start-server"
@@ -446,6 +503,6 @@ verder:
 
     Private Sub ToolStripButton6_Click(sender As System.Object, e As System.EventArgs) Handles ToolStripButton6.Click
         adb_command("shell mkdir " & currentpath & "/" & InputBox("Give name to new folder"))
-        explorerexplore(currentpath)
+        explorerexplore(currentpath, False)
     End Sub
 End Class
