@@ -5,8 +5,11 @@ Module Module1
     Public device As String
     Function Device_connected(fuction As Integer) As Boolean
         Device_connected = False
+        Form1.Process3.StartInfo.Arguments = "devices"
+        Form1.Process3.Start()
         Form1.Process1.StartInfo.Arguments = "devices"
         Form1.Process1.Start()
+        Dialog3.ListBox1.Items.Clear()
         Do Until Form1.Process1.StandardOutput.EndOfStream
             Application.DoEvents()
             Dim output As String = Form1.Process1.StandardOutput.ReadLine

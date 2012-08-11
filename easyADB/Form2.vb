@@ -12,8 +12,8 @@
         Do Until Form1.Process1.StandardOutput.EndOfStream
             Application.DoEvents()
             Dim output As String = Form1.Process1.StandardOutput.ReadLine
-            If Not output = Nothing And count > 4 And Not output = "~ # exit " Then
-                TextBox1.Text = TextBox1.Text & output & vbNewLine
+            If Not output = Nothing And count > 4 Then
+                TextBox1.Text = TextBox1.Text & output.Replace("~ # exit", "") & vbNewLine
             End If
             count += 1
         Loop

@@ -47,13 +47,13 @@ Partial Class Form1
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripTextBox1 = New System.Windows.Forms.ToolStripTextBox()
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton()
+        Me.ToolStripButton8 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.ToolStripButton4 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton3 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton5 = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripButton6 = New System.Windows.Forms.ToolStripButton()
-        Me.ToolStripTextBox2 = New System.Windows.Forms.ToolStripTextBox()
-        Me.ToolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
+        Me.ToolStripButton7 = New System.Windows.Forms.ToolStripButton()
         Me.ListView1 = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -65,7 +65,9 @@ Partial Class Form1
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Process2 = New System.Diagnostics.Process()
-        Me.ToolStripButton7 = New System.Windows.Forms.ToolStripButton()
+        Me.Process3 = New System.Diagnostics.Process()
+        Me.CheckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.MenuStrip1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -132,7 +134,7 @@ Partial Class Form1
         '
         'HelpToolStripMenuItem
         '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RestoreDeletedSystemAppsToolStripMenuItem, Me.ToolStripSeparator2, Me.AboutEasyADBToolStripMenuItem})
+        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RestoreDeletedSystemAppsToolStripMenuItem, Me.CheckForUpdatesToolStripMenuItem, Me.ToolStripSeparator2, Me.AboutEasyADBToolStripMenuItem})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
         Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
         Me.HelpToolStripMenuItem.Text = "Help"
@@ -227,7 +229,7 @@ Partial Class Form1
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton1, Me.ToolStripTextBox1, Me.ToolStripButton2, Me.ToolStripSeparator3, Me.ToolStripButton4, Me.ToolStripButton3, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripTextBox2, Me.ToolStripLabel1, Me.ToolStripButton7})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripButton1, Me.ToolStripTextBox1, Me.ToolStripButton2, Me.ToolStripButton8, Me.ToolStripSeparator3, Me.ToolStripButton4, Me.ToolStripButton3, Me.ToolStripButton5, Me.ToolStripButton6, Me.ToolStripButton7})
         Me.ToolStrip1.Location = New System.Drawing.Point(3, 3)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(745, 25)
@@ -259,6 +261,16 @@ Partial Class Form1
         Me.ToolStripButton2.Size = New System.Drawing.Size(23, 22)
         Me.ToolStripButton2.Text = "ToolStripButton2"
         Me.ToolStripButton2.ToolTipText = "Go"
+        '
+        'ToolStripButton8
+        '
+        Me.ToolStripButton8.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton8.Image = CType(resources.GetObject("ToolStripButton8.Image"), System.Drawing.Image)
+        Me.ToolStripButton8.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton8.Name = "ToolStripButton8"
+        Me.ToolStripButton8.Size = New System.Drawing.Size(23, 22)
+        Me.ToolStripButton8.Text = "ToolStripButton8"
+        Me.ToolStripButton8.Visible = False
         '
         'ToolStripSeparator3
         '
@@ -302,27 +314,24 @@ Partial Class Form1
         Me.ToolStripButton6.Text = "ToolStripButton6"
         Me.ToolStripButton6.ToolTipText = "New Folder"
         '
-        'ToolStripTextBox2
+        'ToolStripButton7
         '
-        Me.ToolStripTextBox2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.ToolStripTextBox2.Name = "ToolStripTextBox2"
-        Me.ToolStripTextBox2.Size = New System.Drawing.Size(100, 25)
-        '
-        'ToolStripLabel1
-        '
-        Me.ToolStripLabel1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-        Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(52, 22)
-        Me.ToolStripLabel1.Text = "Shearch:"
+        Me.ToolStripButton7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.ToolStripButton7.Image = CType(resources.GetObject("ToolStripButton7.Image"), System.Drawing.Image)
+        Me.ToolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton7.Name = "ToolStripButton7"
+        Me.ToolStripButton7.Size = New System.Drawing.Size(23, 22)
+        Me.ToolStripButton7.Text = "Change Permissons"
         '
         'ListView1
         '
+        Me.ListView1.AccessibleRole = System.Windows.Forms.AccessibleRole.Window
+        Me.ListView1.Activation = System.Windows.Forms.ItemActivation.OneClick
         Me.ListView1.AllowDrop = True
         Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader5, Me.ColumnHeader4})
         Me.ListView1.Location = New System.Drawing.Point(8, 31)
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(562, 250)
+        Me.ListView1.Size = New System.Drawing.Size(740, 250)
         Me.ListView1.SmallImageList = Me.ImageList1
         Me.ListView1.TabIndex = 0
         Me.ListView1.UseCompatibleStateImageBehavior = False
@@ -409,14 +418,31 @@ Partial Class Form1
         Me.Process2.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
         Me.Process2.SynchronizingObject = Me
         '
-        'ToolStripButton7
+        'Process3
         '
-        Me.ToolStripButton7.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.ToolStripButton7.Image = CType(resources.GetObject("ToolStripButton7.Image"), System.Drawing.Image)
-        Me.ToolStripButton7.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton7.Name = "ToolStripButton7"
-        Me.ToolStripButton7.Size = New System.Drawing.Size(23, 22)
-        Me.ToolStripButton7.Text = "Change Permissons"
+        Me.Process3.StartInfo.CreateNoWindow = True
+        Me.Process3.StartInfo.Domain = ""
+        Me.Process3.StartInfo.FileName = "adb/adb.exe"
+        Me.Process3.StartInfo.LoadUserProfile = False
+        Me.Process3.StartInfo.Password = Nothing
+        Me.Process3.StartInfo.RedirectStandardError = True
+        Me.Process3.StartInfo.RedirectStandardInput = True
+        Me.Process3.StartInfo.RedirectStandardOutput = True
+        Me.Process3.StartInfo.StandardErrorEncoding = Nothing
+        Me.Process3.StartInfo.StandardOutputEncoding = Nothing
+        Me.Process3.StartInfo.UserName = ""
+        Me.Process3.StartInfo.UseShellExecute = False
+        Me.Process3.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
+        Me.Process3.SynchronizingObject = Me
+        '
+        'CheckForUpdatesToolStripMenuItem
+        '
+        Me.CheckForUpdatesToolStripMenuItem.Name = "CheckForUpdatesToolStripMenuItem"
+        Me.CheckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(223, 22)
+        Me.CheckForUpdatesToolStripMenuItem.Text = "&Check for updates"
+        '
+        'BackgroundWorker1
+        '
         '
         'Form1
         '
@@ -483,10 +509,12 @@ Partial Class Form1
     Friend WithEvents ToolStripButton6 As System.Windows.Forms.ToolStripButton
     Friend WithEvents ColumnHeader4 As System.Windows.Forms.ColumnHeader
     Friend WithEvents ColumnHeader5 As System.Windows.Forms.ColumnHeader
-    Friend WithEvents ToolStripTextBox2 As System.Windows.Forms.ToolStripTextBox
-    Friend WithEvents ToolStripLabel1 As System.Windows.Forms.ToolStripLabel
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
     Friend WithEvents Process2 As System.Diagnostics.Process
     Friend WithEvents ToolStripButton7 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripButton8 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents Process3 As System.Diagnostics.Process
+    Friend WithEvents CheckForUpdatesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
 
 End Class
