@@ -1,4 +1,4 @@
-mount /system
+busybox mount /system
 cd /system/app
-ls -1
+busybox ls -1
 exit

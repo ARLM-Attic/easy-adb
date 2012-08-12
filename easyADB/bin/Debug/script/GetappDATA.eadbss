@@ -1,4 +1,4 @@
 mount data
 cd /data/app
-ls -1
+busybox ls -1
 exit

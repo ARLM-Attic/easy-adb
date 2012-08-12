@@ -341,9 +341,9 @@ verder:
             Process1.StandardInput.WriteLine("find -name """ & path & """ -exec ls -1e {} \;")
         Else
             Process1.StandardInput.WriteLine("cd """ & path & """ ")
-            Process1.StandardInput.WriteLine("ls -le | grep ^d ")
-            Process1.StandardInput.WriteLine("ls -le | grep ^l ")
-            Process1.StandardInput.WriteLine("ls -le | grep ^- ")
+            Process1.StandardInput.WriteLine("busybox ls -le | grep ^d ")
+            Process1.StandardInput.WriteLine("busybox ls -le | grep ^l ")
+            Process1.StandardInput.WriteLine("busybox ls -le | grep ^- ")
         End If
 
         Process1.StandardInput.WriteLine("exit ")
@@ -667,7 +667,7 @@ verder:
                         End If
                     Case 1
                         If Not output.Contains(" ") And Not output.Contains(".tmp") And Not output.Contains("odex") Then
-                            TreeView1.Nodes(categorie).Nodes.Add(output.Replace(".apk", ""))
+                            TreeView1.Nodes(categorie).Nodes.Add(output.Replace(".apk", "").Remove(0, 6).Replace("[0m", ""))
                         End If
                 End Select
 
