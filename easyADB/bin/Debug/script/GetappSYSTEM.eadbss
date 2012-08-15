@@ -1,4 +1,4 @@
 busybox mount /system
 cd /system/app
-busybox ls -1
+busybox ls -1  --color=never
 exit
