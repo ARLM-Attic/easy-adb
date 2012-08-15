@@ -5,7 +5,7 @@ Public Class Dialog3
     Private Sub OK_Button_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles OK_Button.Click
         device = "-s " & ListBox1.SelectedItem.ToString.Split(vbTab)(0)
         MsgBox(device)
-        Form1.adb_command(device & " shell ls -1a")
+        Form1.adb_command(device & " shell ls -1a --color=never")
         If Form1.commandoutput.Contains("No such file or directory") Then
             If device.Contains("emulator") Then
                 MsgBox("Emulators are not supported by busybox")
