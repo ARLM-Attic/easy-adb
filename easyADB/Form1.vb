@@ -75,7 +75,10 @@ reload:
     '
     Private Sub Form1_FormClosing(sender As Object, e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         If Device_connected(0) = True Then
-            Process2.Kill()
+            If Process2.HasExited = False Then
+                Process2.Kill()
+            End If
+
         End If
         Dim items() As Process = Process.GetProcesses
         For Each Process In items
@@ -164,6 +167,16 @@ reload:
             MsgBox("Device Disconected" & vbNewLine & "Press ""refresh"" if device is connected again")
             ListView1.Items.Clear()
             TreeView1.Nodes.Clear()
+            'Timer2.Enabled = True
+        End If
+    End Sub
+    '
+    '
+    '
+    Private Sub Timer2_Tick(sender As Object, e As EventArgs) Handles Timer2.Tick
+        If Device_connected(0) = True Then
+            Form1_Load(Nothing, Nothing)
+            Timer2.Enabled = False
         End If
     End Sub
     '
@@ -714,7 +727,4 @@ verder:
             End If
         End Try
     End Sub
-
-
-   
 End Class

@@ -1,12 +1,17 @@
 ﻿Imports easyADB.Form1
 Imports System.IO
+Imports System.Threading.Thread
 Module Module1
     Public installcomand As String
     Public device As String
     Function Device_connected(fuction As Integer) As Boolean
         Device_connected = False
-        Form1.Process3.StartInfo.Arguments = "start-server"
-        Form1.Process3.Start()
+        Dim fix As Process = New Process
+        fix.StartInfo.FileName = "adb\adb.exe"
+        fix.StartInfo.Arguments = "start-server"
+        fix.StartInfo.WindowStyle = ProcessWindowStyle.Hidden
+        fix.Start()
+        fix.WaitForExit()
         Form1.Process1.StartInfo.Arguments = "devices"
         Form1.Process1.Start()
         Dialog3.ListBox1.Items.Clear()

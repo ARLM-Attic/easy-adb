@@ -33,6 +33,7 @@ Partial Class Form1
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.RestoreDeletedSystemAppsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CheckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.AboutEasyADBToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.APKpuller = New System.Windows.Forms.FolderBrowserDialog()
@@ -66,8 +67,8 @@ Partial Class Form1
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Process2 = New System.Diagnostics.Process()
         Me.Process3 = New System.Diagnostics.Process()
-        Me.CheckForUpdatesToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
+        Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
         Me.MenuStrip1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabControl1.SuspendLayout()
@@ -144,6 +145,12 @@ Partial Class Form1
         Me.RestoreDeletedSystemAppsToolStripMenuItem.Name = "RestoreDeletedSystemAppsToolStripMenuItem"
         Me.RestoreDeletedSystemAppsToolStripMenuItem.Size = New System.Drawing.Size(223, 22)
         Me.RestoreDeletedSystemAppsToolStripMenuItem.Text = "&Restore deleted system apps"
+        '
+        'CheckForUpdatesToolStripMenuItem
+        '
+        Me.CheckForUpdatesToolStripMenuItem.Name = "CheckForUpdatesToolStripMenuItem"
+        Me.CheckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(223, 22)
+        Me.CheckForUpdatesToolStripMenuItem.Text = "&Check for updates"
         '
         'ToolStripSeparator2
         '
@@ -435,13 +442,10 @@ Partial Class Form1
         Me.Process3.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden
         Me.Process3.SynchronizingObject = Me
         '
-        'CheckForUpdatesToolStripMenuItem
-        '
-        Me.CheckForUpdatesToolStripMenuItem.Name = "CheckForUpdatesToolStripMenuItem"
-        Me.CheckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(223, 22)
-        Me.CheckForUpdatesToolStripMenuItem.Text = "&Check for updates"
-        '
         'BackgroundWorker1
+        '
+        '
+        'Timer2
         '
         '
         'Form1
@@ -516,5 +520,6 @@ Partial Class Form1
     Friend WithEvents Process3 As System.Diagnostics.Process
     Friend WithEvents CheckForUpdatesToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents BackgroundWorker1 As System.ComponentModel.BackgroundWorker
+    Friend WithEvents Timer2 As System.Windows.Forms.Timer
 
 End Class
